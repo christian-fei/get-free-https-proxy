@@ -3,9 +3,10 @@ const https = require('https')
 
 tap.test('gets free https proxy', async t => {
   const [proxy] = await getFreeHttpsProxy()
-  console.log(proxy)
   t.true(proxy.host)
+  t.true(/\d+\.\d+\.\d+\.\d+/.test(proxy.host))
   t.true(proxy.port)
+  t.true(Number.isFinite(proxy.port))
 })
 
 async function getFreeHttpsProxy () {
@@ -23,7 +24,8 @@ async function getFreeHttpsProxy () {
         const trsWithIp = trs.filter(tr => /(\d+\.\d+\.\d+\.\d+)[<\/\>a-zA-Z]+(\d+)/.test(tr))
 
         const hostsWithPort = trsWithIp.map(tr => {
-          const [_, host, port] = tr.match(/(\d+\.\d+\.\d+\.\d+)[<\/\>a-zA-Z]+(\d+)/)
+          let [_, host, port] = tr.match(/(\d+\.\d+\.\d+\.\d+)[<\/\>a-zA-Z]+(\d+)/)
+          port = +port
           return {host, port}
         })
 
