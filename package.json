@@ -1,0 +1,23 @@
+{
+  "name": "get-free-https-proxy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap index.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/christian-fei/get-free-https-proxy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/christian-fei/get-free-https-proxy/issues"
+  },
+  "homepage": "https://github.com/christian-fei/get-free-https-proxy#readme",
+  "devDependencies": {
+    "tap": "^14.6.1"
+  }
+}
