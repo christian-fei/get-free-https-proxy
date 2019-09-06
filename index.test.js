@@ -18,15 +18,15 @@ async function getFreeHttpsProxy () {
       res.on('end', () => {
         const startTableRowsIndex = content.indexOf('<table')
         const endTableRowsIndex = content.indexOf('</table>')
-        let tableContent = content.substring(startTableRowsIndex, endTableRowsIndex + '</table>'.length)
+        const tableContent = content.substring(startTableRowsIndex, endTableRowsIndex + '</table>'.length)
 
         const trs = tableContent.split('<tr>').filter(tr => tr.includes('<td>'))
-        const trsWithIp = trs.filter(tr => /(\d+\.\d+\.\d+\.\d+)[<\/\>a-zA-Z]+(\d+)/.test(tr))
+        const trsWithIp = trs.filter(tr => /(\d+\.\d+\.\d+\.\d+)[</>a-zA-Z]+(\d+)/.test(tr))
 
         const hostsWithPort = trsWithIp.map(tr => {
-          let [_, host, port] = tr.match(/(\d+\.\d+\.\d+\.\d+)[<\/\>a-zA-Z]+(\d+)/)
+          let [, host, port] = tr.match(/(\d+\.\d+\.\d+\.\d+)[</>a-zA-Z]+(\d+)/)
           port = +port
-          return {host, port}
+          return { host, port }
         })
 
         resolve(hostsWithPort)
