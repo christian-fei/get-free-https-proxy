@@ -1,5 +1,5 @@
 const tap = require('tap')
-const https = require('https')
+const getFreeHttpsProxy = require('.')
 
 tap.test('gets free https proxy', async t => {
   const [proxy] = await getFreeHttpsProxy()
@@ -8,29 +8,3 @@ tap.test('gets free https proxy', async t => {
   t.true(proxy.port)
   t.true(Number.isFinite(proxy.port))
 })
-
-async function getFreeHttpsProxy () {
-  return new Promise((resolve, reject) => {
-    https.get('https://www.sslproxies.org', (res) => {
-      let content = ''
-      res.on('data', (data) => { content += data.toString() })
-
-      res.on('end', () => {
-        const startTableRowsIndex = content.indexOf('<table')
-        const endTableRowsIndex = content.indexOf('</table>')
-        const tableContent = content.substring(startTableRowsIndex, endTableRowsIndex + '</table>'.length)
-
-        const trs = tableContent.split('<tr>').filter(tr => tr.includes('<td>'))
-        const trsWithIp = trs.filter(tr => /(\d+\.\d+\.\d+\.\d+)[</>a-zA-Z]+(\d+)/.test(tr))
-
-        const hostsWithPort = trsWithIp.map(tr => {
-          let [, host, port] = tr.match(/(\d+\.\d+\.\d+\.\d+)[</>a-zA-Z]+(\d+)/)
-          port = +port
-          return { host, port }
-        })
-
-        resolve(hostsWithPort)
-      })
-    })
-  })
-}
