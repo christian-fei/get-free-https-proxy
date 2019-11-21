@@ -1,0 +1,5 @@
+.nyc_output
+.github
+.travis.yml
+package-lock.json
+index.test.js
